@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en-GB" class="govuk-template">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spurs 2026/27 home fixtures - organiser</title>
+  <style>
+    /* GOV.UK Frontend design language, hand-built for a single file.
+       Class names follow govuk-frontend so this ports cleanly into a
+       Prototype Kit project later. GDS Transport is licensed for use on
+       gov.uk domains only, so this correctly falls back to Arial. */
+    :root {
+      --govuk-text: #0b0c0c;
+      --govuk-secondary: #505a5f;
+      --govuk-border: #b1b4b6;
+      --govuk-light-grey: #f3f2f1;
+      --govuk-blue: #1d70b8;
+      --govuk-focus: #ffdd00;
+      --govuk-green: #00703c;
+      --govuk-red: #d4351c;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: var(--govuk-text);
+      font-family: "GDS Transport", arial, sans-serif;
+      font-size: 19px;
+      line-height: 1.32;
+    }
+    @media (max-width: 640px) { body { font-size: 16px; } }
+
+    /* Header */
+    .govuk-header {
+      background: #0b0c0c;
+      border-bottom: 10px solid var(--govuk-blue);
+      padding: 12px 0;
+    }
+    .govuk-header__content {
+      max-width: 960px; margin: 0 auto; padding: 0 15px;
+      color: #ffffff; font-weight: 700; font-size: 21px;
+    }
+    .govuk-phase-banner {
+      border-bottom: 1px solid var(--govuk-border);
+      padding: 10px 0;
+    }
+    .govuk-phase-banner__content {
+      max-width: 960px; margin: 0 auto; padding: 0 15px;
+      font-size: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+
+    .govuk-width-container { max-width: 960px; margin: 0 auto; padding: 0 15px 60px; }
+    .govuk-main-wrapper { padding-top: 24px; }
+
+    /* Typography */
+    .govuk-caption-xl { color: var(--govuk-secondary); font-size: 24px; margin: 0 0 5px; }
+    .govuk-heading-xl { font-size: 36px; font-weight: 700; margin: 0 0 20px; }
+    .govuk-heading-l { font-size: 28px; font-weight: 700; margin: 40px 0 15px; }
+    .govuk-heading-m { font-size: 22px; font-weight: 700; margin: 30px 0 12px; }
+    .month-heading { border-bottom: 2px solid var(--govuk-blue); padding-bottom: 6px; scroll-margin-top: 12px; }
+    .govuk-body { margin: 0 0 15px; }
+    .govuk-body-s { font-size: 16px; margin: 0 0 10px; }
+    .govuk-hint { color: var(--govuk-secondary); font-size: 16px; margin: 0 0 10px; }
+    .govuk-link { color: var(--govuk-blue); text-decoration: underline; text-underline-offset: 2px; }
+    .govuk-link:hover { color: #003078; }
+    @media (max-width: 640px) {
+      .govuk-heading-xl { font-size: 28px; }
+      .govuk-heading-l { font-size: 22px; }
+      .govuk-heading-m { font-size: 19px; }
+      .govuk-caption-xl { font-size: 19px; }
+    }
+
+    /* Contents / jump-to row */
+    .contents-nav { margin: 0 0 10px; }
+    .contents-nav__label { font-weight: 700; margin: 0 0 6px; }
+    .contents-nav__links { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 0; margin: 0; list-style: none; font-size: 16px; }
+
+    /* Details component */
+    .govuk-details { margin: 0 0 25px; }
+    .govuk-details__summary {
+      display: inline-block; cursor: pointer;
+      color: var(--govuk-blue); text-decoration: underline; text-underline-offset: 2px;
+      list-style: none; position: relative; padding-left: 25px;
+    }
+    .govuk-details__summary::-webkit-details-marker { display: none; }
+    .govuk-details__summary::before {
+      content: ""; position: absolute; left: 0; top: 4px;
+      border-style: solid; border-width: 7px 0 7px 12px;
+      border-color: transparent transparent transparent var(--govuk-text);
+    }
+    .govuk-details[open] > .govuk-details__summary::before {
+      top: 7px;
+      border-width: 12px 7px 0 7px;
+      border-color: var(--govuk-text) transparent transparent transparent;
+    }
+    .govuk-details__text {
+      border-left: 5px solid var(--govuk-border);
+      padding: 15px 15px 5px 20px; margin-top: 8px;
+    }
+
+    /* Tags */
+    .govuk-tag {
+      display: inline-block; padding: 3px 8px 2px;
+      font-size: 15px; font-weight: 700; letter-spacing: .5px;
+      text-transform: none; white-space: nowrap;
+      color: #0c2d4a; background: #bbd4ea; /* default blue */
+    }
+    .govuk-tag--grey   { color: #282d30; background: #e5e6e7; }
+    .govuk-tag--green  { color: #005a30; background: #cce2d8; }
+    .govuk-tag--red    { color: #942514; background: #f6d7d2; }
+    .govuk-tag--yellow { color: #594d00; background: #fff7bf; }
+    .govuk-tag--purple { color: #3d2375; background: #dbd5e9; }
+    .govuk-tag--turquoise { color: #10403c; background: #bfe3e0; }
+
+    /* Summary card */
+    .govuk-summary-card {
+      border: 1px solid var(--govuk-border);
+      margin-bottom: 20px;
+    }
+    .govuk-summary-card--past { opacity: .65; }
+    .govuk-summary-card__title-wrapper {
+      background: var(--govuk-light-grey);
+      padding: 15px;
+      border-bottom: 1px solid var(--govuk-border);
+    }
+    .govuk-summary-card__title {
+      font-size: 22px; font-weight: 700; margin: 0 0 6px;
+    }
+    .govuk-summary-card__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .govuk-summary-card__content { padding: 5px 15px 15px; }
+    .fixture-when { font-weight: 700; margin: 10px 0 4px; }
+    .fixture-extra-cost { margin: 0 0 6px; }
+
+    /* Person answer blocks: name + current answer tag, then small inline radios */
+    .person-fieldset {
+      border: 0; padding: 12px 0 10px; margin: 0;
+      border-top: 1px solid var(--govuk-border);
+    }
+    .person-fieldset:first-of-type { border-top: 0; }
+    .person-legend {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; padding: 0; margin: 0 0 8px;
+    }
+    .govuk-radios--inline { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+    .govuk-radios__item { position: relative; display: flex; align-items: center; min-height: 34px; }
+    .govuk-radios__input {
+      position: absolute; opacity: 0;
+      width: 34px; height: 34px; margin: 0; cursor: pointer; z-index: 1;
+    }
+    .govuk-radios__label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 16px; cursor: pointer; padding: 4px 0;
+    }
+    .govuk-radios__label::before {
+      content: ""; display: inline-block; flex: none;
+      width: 24px; height: 24px;
+      border: 2px solid var(--govuk-text); border-radius: 50%;
+      background: #ffffff;
+    }
+    .govuk-radios__input:checked + .govuk-radios__label::before {
+      box-shadow: inset 0 0 0 4px #ffffff;
+      background: var(--govuk-text);
+    }
+    .govuk-radios__input:focus-visible + .govuk-radios__label::before {
+      border-width: 4px;
+      box-shadow: inset 0 0 0 4px #ffffff, 0 0 0 4px var(--govuk-focus);
+    }
+
+    /* Notes */
+    .note-area { border-top: 1px solid var(--govuk-border); padding-top: 12px; margin-top: 2px; }
+    .govuk-inset-text {
+      border-left: 10px solid var(--govuk-border);
+      padding: 12px 15px; margin: 0 0 12px;
+      background: #ffffff;
+    }
+    .govuk-label { display: block; font-weight: 700; margin: 0 0 4px; }
+    .govuk-input {
+      width: 100%; padding: 8px; font: inherit;
+      border: 2px solid var(--govuk-text); border-radius: 0;
+      margin-bottom: 10px;
+    }
+    .govuk-button-group { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: center; }
+    .govuk-button {
+      display: inline-block; padding: 8px 12px 7px;
+      font: inherit; font-weight: 400; text-align: center; cursor: pointer;
+      color: #ffffff; background: var(--govuk-green);
+      border: 2px solid transparent; border-radius: 0;
+      box-shadow: 0 2px 0 #002d18;
+      margin: 0 0 6px;
+    }
+    .govuk-button:active { top: 2px; position: relative; box-shadow: none; }
+    .govuk-button--secondary {
+      color: var(--govuk-text); background: var(--govuk-light-grey);
+      box-shadow: 0 2px 0 #929191;
+    }
+    .govuk-button--warning {
+      color: #ffffff; background: var(--govuk-red);
+      box-shadow: 0 2px 0 #55150b;
+    }
+
+    /* GOV.UK focus state for other controls */
+    button:focus-visible, input.govuk-input:focus-visible, a:focus-visible, summary:focus-visible {
+      outline: 3px solid var(--govuk-focus);
+      outline-offset: 0;
+      box-shadow: inset 0 0 0 2px var(--govuk-text);
+    }
+    .govuk-input:focus-visible { box-shadow: none; border-color: var(--govuk-text); }
+
+    .save-status {
+      position: fixed; bottom: 12px; right: 12px; z-index: 10;
+      background: var(--govuk-text); color: #ffffff;
+      font-size: 15px; padding: 6px 12px;
+      opacity: 0; transition: opacity .3s; pointer-events: none;
+    }
+    .save-status.show { opacity: 1; }
+    .status-msg { text-align: center; padding: 50px 20px; color: var(--govuk-secondary); }
+  </style>
+</head>
+<body>
+  <header class="govuk-header" role="banner">
+    <div class="govuk-header__content">Spurs tickets</div>
+  </header>
+
+  <div class="govuk-phase-banner">
+    <div class="govuk-phase-banner__content">
+      <strong class="govuk-tag">Prototype</strong>
+      <span>This is a family prototype. Everyone with the link sees and shares the same answers.</span>
+    </div>
+  </div>
+
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" id="main" role="main">
+      <h1 class="govuk-heading-xl">Spurs 2026/27 home fixtures - organiser</h1>
+      <p class="govuk-body">Choose an answer next to your name for each game. It saves straight away and everyone sees the same list.</p>
+      <p class="govuk-body">
+        <a class="govuk-link" href="https://spurs.ecal.com" target="_blank" rel="noopener noreferrer">Add the Spurs fixtures to your phone's calendar (opens in new tab)</a>
+        — kick-off times update automatically when games move.
+      </p>
+
+      <details class="govuk-details">
+        <summary class="govuk-details__summary">About this list</summary>
+        <div class="govuk-details__text">
+          <p class="govuk-body-s">Games marked 'Cup' are not included in the season ticket — you pay extra for those. More cup games will be added here when draws are made.</p>
+          <p class="govuk-body-s">'On TV' shows the UK broadcaster where it's been confirmed. 3pm Saturday games are never shown live on UK TV.</p>
+          <p class="govuk-body-s">Sunderland (30 January) may move to a Sunday or Monday because of the other team's Europa League games. Kick-off times change when TV picks are announced — dates here were checked on 25 August 2026.</p>
+        </div>
+      </details>
+
+      <nav class="contents-nav" aria-label="Months" id="contentsNav"></nav>
+
+      <div id="fixtures"><p class="status-msg">Loading the fixtures…</p></div>
+    </main>
+  </div>
+
+  <div class="save-status" id="saveStatus" aria-live="polite">Saved</div>
+
+  <script>
+    const PEOPLE = ["Graham", "Danny", "Andrew"];
+    const STATUSES = ["Going", "Not going", "Gifted", "TBC"];
+    const STATUS_TAG = {
+      "Going": "govuk-tag--green",
+      "Not going": "govuk-tag--red",
+      "Gifted": "govuk-tag--yellow",
+      "TBC": "govuk-tag--grey"
+    };
+    const COMP_TAG = {
+      "Premier League": "",
+      "Carabao Cup": "govuk-tag--turquoise",
+      "FA Cup": "govuk-tag--purple"
+    };
+    const MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
+
+    // Home fixtures, checked against tottenhamhotspur.com on 25 August 2026.
+    // tv = confirmed UK broadcaster; 3pm Saturday games are never televised.
+    const FIXTURES = [
+      { id: "c01", date: "2026-08-26", label: "Wednesday 26 August 2026", ko: "7.45pm", opp: "Charlton Athletic", comp: "Carabao Cup", round: "Round two", tv: "Sky Sports+", extraCost: true },
+      { id: "f01", date: "2026-08-29", label: "Saturday 29 August 2026", ko: "5.30pm", opp: "Newcastle United", comp: "Premier League", tv: "Sky Sports" },
+      { id: "f02", date: "2026-09-12", label: "Saturday 12 September 2026", ko: "5.30pm", opp: "Everton", comp: "Premier League", tv: "Sky Sports" },
+      { id: "f03", date: "2026-09-19", label: "Saturday 19 September 2026", ko: "12.30pm", opp: "Aston Villa", comp: "Premier League", tv: "TNT Sports" },
+      { id: "f04", date: "2026-10-19", label: "Monday 19 October 2026", ko: "8pm", opp: "Coventry City", comp: "Premier League", tv: "Sky Sports" },
+      { id: "f05", date: "2026-10-31", label: "Saturday 31 October 2026", ko: "5.30pm", opp: "Crystal Palace", comp: "Premier League", tv: "Sky Sports" },
+      { id: "f06", date: "2026-11-21", label: "Saturday 21 November 2026", ko: "3pm", opp: "Ipswich Town", comp: "Premier League" },
+      { id: "f07", date: "2026-12-02", label: "Wednesday 2 December 2026", ko: "8pm", opp: "Fulham", comp: "Premier League" },
+      { id: "f08", date: "2026-12-05", label: "Saturday 5 December 2026", ko: "3pm", opp: "Arsenal", comp: "Premier League" },
+      { id: "f09", date: "2026-12-26", label: "Saturday 26 December 2026", ko: "3pm", opp: "AFC Bournemouth", comp: "Premier League" },
+      { id: "f10", date: "2026-12-30", label: "Wednesday 30 December 2026", ko: "8pm", opp: "Brighton & Hove Albion", comp: "Premier League" },
+      { id: "f11", date: "2027-01-16", label: "Saturday 16 January 2027", ko: "3pm", opp: "Leeds United", comp: "Premier League" },
+      { id: "f12", date: "2027-01-30", label: "Saturday 30 January 2027", ko: "3pm", opp: "Sunderland", comp: "Premier League", mayMove: true },
+      { id: "f13", date: "2027-02-10", label: "Wednesday 10 February 2027", ko: "8pm", opp: "Manchester City", comp: "Premier League" },
+      { id: "f14", date: "2027-02-27", label: "Saturday 27 February 2027", ko: "3pm", opp: "Liverpool", comp: "Premier League" },
+      { id: "f15", date: "2027-03-13", label: "Saturday 13 March 2027", ko: "3pm", opp: "Nottingham Forest", comp: "Premier League" },
+      { id: "f16", date: "2027-04-10", label: "Saturday 10 April 2027", ko: "3pm", opp: "Brentford", comp: "Premier League" },
+      { id: "f17", date: "2027-04-24", label: "Saturday 24 April 2027", ko: "3pm", opp: "Hull City", comp: "Premier League" },
+      { id: "f18", date: "2027-05-08", label: "Saturday 8 May 2027", ko: "3pm", opp: "Chelsea", comp: "Premier League" },
+      { id: "f19", date: "2027-05-23", label: "Sunday 23 May 2027", ko: "3pm", opp: "Manchester United", comp: "Premier League" }
+    ];
+
+    // ================================================================
+    // STORAGE SETUP — one thing to change.
+    // Paste your Google Apps Script web app URL between the quotes below.
+    // The setup guide (SETUP.md) walks through getting this URL.
+    // ================================================================
+    const API_URL = "https://script.google.com/macros/s/AKfycbzccjaKqXI0h7aDs67YGoB1MOKjaZqRs_BUoDRs1sUKNns7v6r53VZW9M-k1m9pt63NQQ/exec";
+
+    let state = null;
+
+    function defaultState() {
+      const s = {};
+      for (const f of FIXTURES) {
+        s[f.id] = { Graham: "TBC", Danny: "TBC", Andrew: "TBC", note: "" };
+      }
+      return s;
+    }
+
+    function mergeIntoDefault(loaded) {
+      const s = defaultState();
+      if (loaded && typeof loaded === "object") {
+        for (const id of Object.keys(s)) {
+          if (loaded[id] && typeof loaded[id] === "object") {
+            for (const p of PEOPLE) {
+              if (STATUSES.includes(loaded[id][p])) s[id][p] = loaded[id][p];
+            }
+            if (typeof loaded[id].note === "string") s[id].note = loaded[id].note;
+          }
+        }
+      }
+      return s;
+    }
+
+    function notConnected() {
+      return !API_URL || API_URL.indexOf("PASTE_") === 0;
+    }
+
+    function gameLabel(fixtureId) {
+      const f = FIXTURES.find(x => x.id === fixtureId);
+      return f ? (f.opp + " (" + f.label + ")") : fixtureId;
+    }
+
+    async function loadState() {
+      if (notConnected()) { state = defaultState(); return; }
+      try {
+        const response = await fetch(API_URL);
+        const loaded = await response.json();
+        state = mergeIntoDefault(loaded);
+      } catch (e) {
+        console.error("Load failed", e);
+        state = defaultState();
+        flashSaved(false);
+      }
+    }
+
+    async function persistChange(fixtureId, field, value) {
+      state[fixtureId][field] = value;
+      if (notConnected()) { flashSaved(false); return; }
+      try {
+        // No custom headers, so the browser sends this as a simple request
+        // that Google Apps Script accepts from any website.
+        const response = await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ id: fixtureId, game: gameLabel(fixtureId), field: field, value: value })
+        });
+        flashSaved(response.ok);
+      } catch (e) {
+        console.error("Save failed", e);
+        flashSaved(false);
+      }
+    }
+
+    let saveTimer = null;
+    function flashSaved(ok) {
+      const el = document.getElementById("saveStatus");
+      el.textContent = ok ? "Saved" : "Could not save — check your connection and try again";
+      el.classList.add("show");
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => el.classList.remove("show"), ok ? 1500 : 4000);
+    }
+
+    function todayStr() {
+      const d = new Date();
+      const p = n => String(n).padStart(2, "0");
+      return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+    }
+
+    function monthKey(dateStr) { return dateStr.slice(0, 7); } // "2026-08"
+    function monthLabel(key) {
+      const [y, m] = key.split("-");
+      return MONTH_NAMES[parseInt(m, 10) - 1] + " " + y;
+    }
+    function monthShort(key) {
+      const [y, m] = key.split("-");
+      return MONTH_NAMES[parseInt(m, 10) - 1];
+    }
+
+    function render() {
+      const wrap = document.getElementById("fixtures");
+      const nav = document.getElementById("contentsNav");
+      wrap.innerHTML = "";
+      nav.innerHTML = "";
+
+      const today = todayStr();
+      const upcoming = FIXTURES.filter(f => f.date >= today);
+      const played = FIXTURES.filter(f => f.date < today);
+      const nextId = upcoming.length ? upcoming[0].id : null;
+
+      // Group upcoming fixtures by month, keeping order
+      const months = [];
+      const byMonth = {};
+      for (const f of upcoming) {
+        const key = monthKey(f.date);
+        if (!byMonth[key]) { byMonth[key] = []; months.push(key); }
+        byMonth[key].push(f);
+      }
+
+      // Jump-to contents row
+      if (months.length > 1 || played.length) {
+        const label = document.createElement("p");
+        label.className = "contents-nav__label govuk-body-s";
+        label.textContent = "Jump to a month:";
+        nav.appendChild(label);
+        const list = document.createElement("ul");
+        list.className = "contents-nav__links";
+        for (const key of months) {
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.className = "govuk-link";
+          a.href = "#month-" + key;
+          a.textContent = monthShort(key);
+          li.appendChild(a);
+          list.appendChild(li);
+        }
+        if (played.length) {
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.className = "govuk-link";
+          a.href = "#already-played";
+          a.textContent = "Already played";
+          li.appendChild(a);
+          list.appendChild(li);
+        }
+        nav.appendChild(list);
+      }
+
+      // Month sections
+      for (const key of months) {
+        const h = document.createElement("h2");
+        h.className = "govuk-heading-m month-heading";
+        h.id = "month-" + key;
+        h.textContent = monthLabel(key);
+        wrap.appendChild(h);
+        for (const f of byMonth[key]) wrap.appendChild(buildCard(f, f.id === nextId, false));
+      }
+
+      // Played games at the end
+      if (played.length) {
+        const h = document.createElement("h2");
+        h.className = "govuk-heading-l month-heading";
+        h.id = "already-played";
+        h.textContent = "Already played";
+        wrap.appendChild(h);
+        for (const f of played) wrap.appendChild(buildCard(f, false, true));
+      }
+    }
+
+    function tag(text, extraClass) {
+      const t = document.createElement("strong");
+      t.className = "govuk-tag" + (extraClass ? " " + extraClass : "");
+      t.textContent = text;
+      return t;
+    }
+
+    function buildCard(f, isNext, isPast) {
+      const card = document.createElement("div");
+      card.className = "govuk-summary-card" + (isPast ? " govuk-summary-card--past" : "");
+
+      // Header: opponent + tags
+      const head = document.createElement("div");
+      head.className = "govuk-summary-card__title-wrapper";
+      const title = document.createElement("h3");
+      title.className = "govuk-summary-card__title";
+      title.textContent = "Spurs v " + f.opp;
+      head.appendChild(title);
+
+      const tags = document.createElement("div");
+      tags.className = "govuk-summary-card__tags";
+      if (isNext) tags.appendChild(tag("Next game", "govuk-tag--green"));
+      tags.appendChild(tag(f.comp + (f.round ? " – " + f.round.toLowerCase() : ""), COMP_TAG[f.comp] || ""));
+      if (f.tv) tags.appendChild(tag("On TV: " + f.tv, "govuk-tag--yellow"));
+      head.appendChild(tags);
+      card.appendChild(head);
+
+      // Content
+      const content = document.createElement("div");
+      content.className = "govuk-summary-card__content";
+
+      const when = document.createElement("p");
+      when.className = "fixture-when";
+      when.textContent = f.label + ", kick-off " + f.ko + (f.mayMove ? " (date may change)" : "");
+      content.appendChild(when);
+
+      if (f.extraCost) {
+        const hint = document.createElement("p");
+        hint.className = "govuk-hint fixture-extra-cost";
+        hint.textContent = "Not included in the season ticket — you pay extra for this game.";
+        content.appendChild(hint);
+      }
+
+      // One radio group per person: the options are always visible, so it's
+      // obvious the answer can be changed.
+      for (const person of PEOPLE) {
+        const status = state[f.id][person];
+        const fs = document.createElement("fieldset");
+        fs.className = "person-fieldset";
+
+        const legend = document.createElement("legend");
+        legend.className = "person-legend";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = person;
+        legend.appendChild(nameSpan);
+        const statusTag = tag(status, STATUS_TAG[status]);
+        legend.appendChild(statusTag);
+        fs.appendChild(legend);
+
+        const radios = document.createElement("div");
+        radios.className = "govuk-radios govuk-radios--small govuk-radios--inline";
+        for (const option of STATUSES) {
+          const item = document.createElement("div");
+          item.className = "govuk-radios__item";
+          const input = document.createElement("input");
+          input.className = "govuk-radios__input";
+          input.type = "radio";
+          input.name = f.id + "-" + person.toLowerCase();
+          input.id = f.id + "-" + person.toLowerCase() + "-" + option.toLowerCase().replace(" ", "-");
+          input.value = option;
+          input.checked = option === status;
+          const label = document.createElement("label");
+          label.className = "govuk-radios__label";
+          label.setAttribute("for", input.id);
+          label.textContent = option;
+          input.addEventListener("change", () => {
+            state[f.id][person] = option;
+            const newTag = tag(option, STATUS_TAG[option]);
+            legend.replaceChild(newTag, legend.lastChild);
+            persistChange(f.id, person, option);
+          });
+          item.appendChild(input);
+          item.appendChild(label);
+          radios.appendChild(item);
+        }
+        fs.appendChild(radios);
+        content.appendChild(fs);
+      }
+
+      // Note area — inset text when a note exists, with change and delete buttons
+      const noteArea = document.createElement("div");
+      noteArea.className = "note-area";
+      const renderNoteView = () => {
+        noteArea.innerHTML = "";
+        const current = state[f.id].note;
+        if (current) {
+          const inset = document.createElement("div");
+          inset.className = "govuk-inset-text";
+          inset.textContent = current;
+          noteArea.appendChild(inset);
+        }
+        const group = document.createElement("div");
+        group.className = "govuk-button-group";
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "govuk-button govuk-button--secondary";
+        btn.textContent = current ? "Change the note" : "Add a note";
+        btn.addEventListener("click", () => {
+          noteArea.innerHTML = "";
+          const label = document.createElement("label");
+          label.className = "govuk-label";
+          label.setAttribute("for", "note-" + f.id);
+          label.textContent = "Note for this game";
+          const hint = document.createElement("p");
+          hint.className = "govuk-hint";
+          hint.textContent = "For example, 'Andrew has Graham's ticket'";
+          const input = document.createElement("input");
+          input.className = "govuk-input";
+          input.id = "note-" + f.id;
+          input.maxLength = 120;
+          input.value = state[f.id].note;
+          const save = document.createElement("button");
+          save.type = "button";
+          save.className = "govuk-button";
+          save.textContent = "Save note";
+          const done = () => {
+            state[f.id].note = input.value.trim();
+            persistChange(f.id, "note", state[f.id].note);
+            renderNoteView();
+          };
+          save.addEventListener("click", done);
+          input.addEventListener("keydown", e => { if (e.key === "Enter") done(); });
+          noteArea.appendChild(label);
+          noteArea.appendChild(hint);
+          noteArea.appendChild(input);
+          noteArea.appendChild(save);
+          input.focus();
+        });
+        group.appendChild(btn);
+
+        if (current) {
+          const del = document.createElement("button");
+          del.type = "button";
+          del.className = "govuk-button govuk-button--warning";
+          del.textContent = "Delete note";
+          del.addEventListener("click", () => {
+            state[f.id].note = "";
+            persistChange(f.id, "note", "");
+            renderNoteView();
+          });
+          group.appendChild(del);
+        }
+
+        noteArea.appendChild(group);
+      };
+      renderNoteView();
+      content.appendChild(noteArea);
+
+      card.appendChild(content);
+      return card;
+    }
+
+    (async function init() {
+      try {
+        await loadState();
+        render();
+        if (notConnected()) {
+          const warn = document.createElement("p");
+          warn.className = "govuk-body";
+          warn.style.cssText = "border-left:10px solid #d4351c; padding:12px 15px; font-weight:700;";
+          warn.textContent = "This page is not connected to its storage yet, so answers will not save. Follow the setup guide to add your web app URL.";
+          const fixturesEl = document.getElementById("fixtures");
+          fixturesEl.parentNode.insertBefore(warn, fixturesEl);
+        }
+      } catch (e) {
+        console.error(e);
+        document.getElementById("fixtures").innerHTML =
+          '<p class="status-msg">The fixture list did not load. Refresh the page to try again.</p>';
+      }
+    })();
+  </script>
+</body>
+</html>
